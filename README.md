@@ -45,7 +45,7 @@ This issue only manifest itself when cgroup are activly used. I've confirmed tha
 
 The test script will automatically create following bash child bash script task which will be used to run test tasks.
 
-#child_process.sh 
+# child_process.sh 
 ```
 #!/bin/bash
 # check if it is called as a worker script
