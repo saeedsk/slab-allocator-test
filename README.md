@@ -43,7 +43,7 @@ Although we have called this test a an stress test but this situation may happen
 This issue only manifest itself when cgroup are activly used. I've confirmed that this issue is present in Kernel V4.19.66 V5.0.0 and latest Kernel Relaes 5.3.0.
 
 # child_process.sh 
-The test script will automatically create following bash child bash script task which will be used to run test tasks.
+The test script will automatically create following bash script which will be used to run as test tasks.
 
 ```
 #!/bin/bash
