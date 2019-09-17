@@ -5,6 +5,13 @@ It looks like kernel doesn't free up the allocated slabs for tasks that are runn
 This bash scipt will create multiple cgroups and it will stresstest the linux kernel by spawining multiple tasks at the same time.
 Test shows that number of allocated slabs have been increased even though those task are completed adn the allocated memory won't get released unless someone manaually shrink the allocated slabs by writing to /sys/kernel/slab/<slab caches>/shrink sysfs files.
 
+#Prerequisite
+Kernel needs to have compiled with CONFIG_DEBUG_SLAB=y  which is usually the default configuration
+also this script us using cgroutp tools which can be intalled on Ubuntu by running the following command:
+'''
+sudo apt-get install cgroup-tools
+'''
+
 Test Result for spawning 50000 tasks on Ubuntu 19.04 with kernel version 5.0.0:
 ```
 # uname -a
@@ -34,3 +41,24 @@ as it is shown above number of active task_struct slabs has been increased from 
 Cgroup memory accounting has been enabled in newer systemd released and systemd will create multiple cgroup to run different software deamons.
 Although we have called this test a an stress test but this situation may happens at normal system boot times where systemd is trying to load and run multiple programs with different cgroups.
 This issue only manifest itself when cgroup are activly used. I've confirmed that this issue is present in Kernel V4.19.66 V5.0.0 and latest Kernel Relaes 5.3.0.
+
+
+The test script will automatically create following bash child bash script task which will be used to run test tasks.
+
+#child_process.sh 
+'''
+#!/bin/bash
+# check if it is called as a worker script
+if [ "$1" != "" ]
+then
+	eval "$@"
+	exit
+fi
+# it is called as an scheduler script
+sleep 2
+for i in {1..100}
+do	
+	./child_process.sh sleep 1;echo something > /dev/null & 2>&1
+done
+'''
+
