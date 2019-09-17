@@ -42,10 +42,9 @@ Cgroup memory accounting has been enabled in newer systemd released and systemd 
 Although we have called this test a an stress test but this situation may happens at normal system boot times where systemd is trying to load and run multiple programs with different cgroups.
 This issue only manifest itself when cgroup are activly used. I've confirmed that this issue is present in Kernel V4.19.66 V5.0.0 and latest Kernel Relaes 5.3.0.
 
-
+# child_process.sh 
 The test script will automatically create following bash child bash script task which will be used to run test tasks.
 
-# child_process.sh 
 ```
 #!/bin/bash
 # check if it is called as a worker script
