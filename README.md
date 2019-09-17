@@ -39,7 +39,7 @@ Number of running processes : 334
 As it is shown above number of active task_struct slabs has been increased from 736 to 11404 while system is only running 334 tasks at idle time.
 
 If we write to slab’s shrink systf entry, then kernel will release deactivated objects and it will free up the related memory, but it not happening automatically by kernel as it is expected.
-# for file in /sys/kernel/slab/*; do echo 1 > $file/shrink; done
+```# for file in /sys/kernel/slab/*; do echo 1 > $file/shrink; done```
 
 
 In recent systemd releases, Cgroup memory accounting has been enabled by default and systemd will create multiple cgroups to run different software daemons. Although we have called this test as an stress test but this situation may happen at normal system boot times where systemd is trying to load and run multiple programs with different cgroups.
