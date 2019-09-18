@@ -18,6 +18,8 @@ also this script us using cgroutp tools which can be intalled on Ubuntu by runni
 sudo apt-get install cgroup-tools
 ```
 
+# Test Result:
+
 Test Result for spawning 100,000 tasks on Ubuntu 19.04 with kernel version 5.0.0:
 
 ```
@@ -42,9 +44,14 @@ task_struct        11404  11665   5888    5    8 : tunables    0    0    0 : sla
 Number of running processes : 334
 ```
 
+# Analysis:
 
 As it is shown above, number of active task_struct slabs has been increased from 736 to 11404 objects during the test. System keeps 11404 task_struct objects in the idle time where only 334 tasks is running. 
-This huge number of active task_struct slabs it is not normal and a huge fraction of that memory can be - released to system memory pool. If we write to slab’s shrink systf entry, then kernel will release deactivated objects and it will free up the related memory, but it is not happening automatically by kernel as it was expected.
+This huge number of active task_struct slabs it is not normal and a huge fraction of that memory can be - released to system memory pool. 
+
+# How to freeup this zombie slab objects :
+
+If we write to slab’s shrink systf entry, then kernel will release deactivated objects and it will free up the related memory, but it is not happening automatically by kernel as it was expected.
 
 Following line is the command that would release those zombie objects:
 
@@ -52,12 +59,19 @@ Following line is the command that would release those zombie objects:
 # for file in /sys/kernel/slab/*; do echo 1 > $file/shrink; done
 ```
 
+# Low system memory situation test:
+
 We know that some of slab caches are supposed to remain allocated until system really need that memory. 
 So in one test we tried to consume all available system memory in a hope that kernel would release the above Memory but it didn’t happened and "out of memory killer" started killing processes and no memory got released by kernel slab allocator.
+
+# Systemd and Cgroups :
 
 In recent systemd releases, CGroup memory accounting has been enabled by default and systemd will create multiple cgroups to run different software daemons. Although we have called this test as an stress test but this situation may happen in normal system boot time where systemd is trying to load and run multiple instances of programs daemons with different cgroups.
 This issue only manifest itself when cgroup are actively in use. I've confirmed that this issue is present  in Kernel V4.19.66, Kernel V5.0.0 (Ubuntu 19.04) and latest Kernel Release V5.3.0.
 Any comment and or hint would be greatly appreciated.
+
+# Related Kernel Configuration items:
+
 Here is some related kernel configuration while this test were done:
 
 ```
