@@ -12,7 +12,7 @@ also this script us using cgroutp tools which can be intalled on Ubuntu by runni
 sudo apt-get install cgroup-tools
 ```
 
-Test Result for spawning 50000 tasks on Ubuntu 19.04 with kernel version 5.0.0:
+Test Result for spawning 100,000 tasks on Ubuntu 19.04 with kernel version 5.0.0:
 ```
 # uname -a
 Linux ubuntu 5.0.0-27-generic #28-Ubuntu SMP Tue Aug 20 19:53:07 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
