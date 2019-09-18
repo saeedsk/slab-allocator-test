@@ -1,4 +1,4 @@
-# Kernel Slab allocator script
+# Kernel cgroup slab allocator test script
 
 # Problem Description:
 We are chasing an issue where slab allocator is not releasing task_struct slab objects allocated by cgroups and we are wondering if this is a known issue or an expected behavior ?
