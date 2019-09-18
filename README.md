@@ -49,7 +49,7 @@ Number of running processes : 334
 As it is shown above, number of active task_struct slabs has been increased from 736 to 11404 objects during the test. System keeps 11404 task_struct objects in the idle time where only 334 tasks is running. 
 This huge number of active task_struct slabs it is not normal and a huge fraction of that memory can be - released to system memory pool. 
 
-# How to freeup this zombie slab objects :
+# How to freeup these zombie slab objects :
 
 If we write to slab’s shrink systf entry, then kernel will release deactivated objects and it will free up the related memory, but it is not happening automatically by kernel as it was expected.
 
